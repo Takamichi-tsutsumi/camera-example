@@ -8,6 +8,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableHighlight,
+  TouchableOpacity,
   Dimensions
 } from 'react-native'
 import Camera from 'react-native-camera';
@@ -37,6 +38,8 @@ class VideoCamera extends Component {
 
     this.renderVideo = this.renderVideo.bind(this);
     this.renderCamera = this.renderCamera.bind(this);
+
+    this.resetVideo = this.resetVideo.bind(this);
   }
 
   startRecording() {
@@ -123,7 +126,7 @@ class VideoCamera extends Component {
     >
      {
         this.state.isRecording ?
-          <Text style={ styles.capture }>Recording</Text>
+          <Text style={ styles.capture }>...</Text>
           : <Text style={ styles.capture } onPress={this.startRecording.bind(this)}>Rec</Text>
       }
     </Camera>
@@ -145,7 +148,24 @@ class VideoCamera extends Component {
           value={ this.state.catchPhrase }
         />
       </View>
+      <View style={ [styles.floatView, styles.backdropView, {top: 500, width: 50, alignSelf: 'flex-end'}] }>
+        <TouchableOpacity onPress={ this.resetVideo }>
+          <Text style={{color: 'white'}}>
+            Reset
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
+  }
+
+  resetVideo() {
+    this.setState({
+      isRecording: false,
+      recorded: false,
+      videoPath: null,
+      catchPhrase: '',
+      location: ''
+    })
   }
 
   render() {
