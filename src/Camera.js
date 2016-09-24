@@ -19,13 +19,14 @@ class VideoCamera extends Component {
 
     this.state = {
       camera: {
-        type: "back",
+        type: 'back',
         flashMode: Camera.constants.FlashMode.auto
       },
       isRecording: false,
-      commentText: "府中本町",
       videoPath: null,
-      recorded: false
+      recorded: false,
+      location: '',
+      catchPhrase: ''
     };
 
     this.startRecording = this.startRecording.bind(this);
@@ -58,7 +59,7 @@ class VideoCamera extends Component {
       isRecording: true
     });
 
-    setTimeout(this.stopRecording, 3000);
+    setTimeout(this.stopRecording, 6000);
   }
 
   stopRecording() {
@@ -112,9 +113,9 @@ class VideoCamera extends Component {
       ref={(cam) => {
             this.camera = cam;
           }}
-      style={ styles.preview }
+      style={ styles.fullScreen }
       aspect={ Camera.constants.Aspect.fill }
-      captureQuality="middle"
+      captureQuality='middle'
       captureTarget={ Camera.constants.CaptureTarget.CameraRoll }
       captureMode={ Camera.constants.CaptureMode.video }
       type={ this.state.camera.type }
@@ -130,26 +131,31 @@ class VideoCamera extends Component {
 
   renderVideo() {
     return <View style={ styles.container }>
-      <Video
+     <Video
         source={{ uri: this.state.videoPath }}
         repeat={ true }
-        style={ styles.background }
-      />
-      <View style={ styles.backdropView }>
-        <Text style={ styles.overlayText} value="abc">{ this.state.commentText }</Text>
+        style={ styles.fullScreen }
+     />
+      <View style={[styles.backdropView, styles.floatView]}>
+        <TextInput
+          style={ styles.overlayText }
+          placeholder='キャッチフレーズ'
+          placeholderTextColor='white'
+          onChangeText={ input => { this.setState({catchPhrase: input})} }
+          value={ this.state.catchPhrase }
+        />
       </View>
     </View>
-
   }
 
   render() {
     return (
       <View style={ styles.container }>
-        {
-          this.state.recorded ?
-            this.renderVideo() :
-            this.renderCamera()
-        }
+       {
+         this.state.recorded ?
+           this.renderVideo() :
+           this.renderCamera()
+       }
       </View>
     )
   }
@@ -161,42 +167,40 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
 
-  preview: {
+  fullScreen: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width
+    alignItems: 'center'
   },
 
   capture: {
     flex: 0,
-    borderRadius: 5,
+    borderRadius: 15,
     padding: 10,
     margin: 40
   },
 
   backdropView: {
-    backgroundColor: "rgba(0,0,0,0)",
-    width: 25,
-    alignSelf: 'flex-end',
-    justifyContent: 'center',
-    marginRight: 10
+    backgroundColor: 'rgba(0,0,0,0)',
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center'
   },
 
   overlayText: {
-    flex: 0,
-    color: "#fff",
+    flex: 1,
+    color: 'white',
     fontSize: 24
   },
 
-  background: {
+  floatView: {
+    width: Dimensions.get('window').width,
+    height: 100,
+    margin: 20,
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0
+    top: 300
   }
+
 });
 
 export default VideoCamera;
