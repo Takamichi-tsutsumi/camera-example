@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import Camera from 'react-native-camera';
 import Video from 'react-native-video';
+import { DraggableInput } from './DraggableView.js';
 
 class VideoCamera extends Component {
   constructor(props) {
@@ -140,13 +141,10 @@ class VideoCamera extends Component {
         style={ styles.fullScreen }
      />
       <View style={[styles.backdropView, styles.floatView]}>
-        <TextInput
-          style={ styles.overlayText }
-          placeholder='キャッチフレーズ'
-          placeholderTextColor='white'
-          onChangeText={ input => { this.setState({catchPhrase: input})} }
-          value={ this.state.catchPhrase }
-        />
+      <DraggableInput
+        inputStyle={ styles.overlayText }
+        text='うみぽす'
+        placeholderTextColor='white' />
       </View>
       <View style={ [styles.floatView, styles.backdropView, {top: 500, width: 50, alignSelf: 'flex-end'}] }>
         <TouchableOpacity onPress={ this.resetVideo }>
@@ -218,7 +216,8 @@ const styles = StyleSheet.create({
     height: 100,
     margin: 20,
     position: 'absolute',
-    top: 300
+    top: 0,
+    left: 0
   }
 
 });

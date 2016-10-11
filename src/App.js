@@ -5,8 +5,7 @@ import {
   Text,
   View
 } from 'react-native';
-import VideoCamera  from './Camera.js'
-
+import VideoCamera  from './Camera.js';
 
 class App extends Component {
   render() {
