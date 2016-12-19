@@ -44,16 +44,19 @@ class VideoCamera extends Component {
   }
 
   startRecording() {
-    console.log("Onocame: start recording");
+    console.log("Onocame: start recording come on");
 
-    this.camera.capture()
+    this.camera.capture({
+        target: Camera.constants.CaptureTarget.cameraRoll
+    })
       .then(function(data) {
-        this.setState({
-          videoPath: data.path,
-          isRecording: false,
-          recorded: true
-        });
-        console.log(data.path);
+        //   console.log('data : ', data);
+        // this.setState({
+        //   videoPath: data.path,
+        //   isRecording: false,
+        //   recorded: true
+        // });
+        console.log('captured data : ', data);
       }.bind(this))
       .catch((err) => {
         console.error(err)
@@ -113,14 +116,15 @@ class VideoCamera extends Component {
 
 
   renderCamera() {
-    return <Camera
+    return (
+        <Camera
       ref={(cam) => {
             this.camera = cam;
           }}
       style={ styles.fullScreen }
       aspect={ Camera.constants.Aspect.fill }
       captureQuality='middle'
-      captureTarget={ Camera.constants.CaptureTarget.CameraRoll }
+      captureTarget={ Camera.constants.CaptureTarget.cameraRoll }
       captureMode={ Camera.constants.CaptureMode.video }
       type={ this.state.camera.type }
       flashMode={ this.state.camera.flashMode }
@@ -131,29 +135,18 @@ class VideoCamera extends Component {
           : <Text style={ styles.capture } onPress={this.startRecording.bind(this)}>Rec</Text>
       }
     </Camera>
+    )
   }
 
   renderVideo() {
-    return <View style={ styles.container }>
-     <Video
-        source={{ uri: this.state.videoPath }}
-        repeat={ true }
-        style={ styles.fullScreen }
-     />
-      <View style={[styles.backdropView, styles.floatView]}>
-      <DraggableInput
-        inputStyle={ styles.overlayText }
-        text='うみぽす'
-        placeholderTextColor='white' />
-      </View>
-      <View style={ [styles.floatView, styles.backdropView, {top: 500, width: 50, alignSelf: 'flex-end'}] }>
-        <TouchableOpacity onPress={ this.resetVideo }>
-          <Text style={{color: 'white'}}>
-            Reset
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    return (
+        <View style={ styles.container }>
+        <Text>
+        Hello world
+        </Text>
+
+        </View>
+    )
   }
 
   resetVideo() {
